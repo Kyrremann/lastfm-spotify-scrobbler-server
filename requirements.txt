@@ -1,0 +1,3 @@
+-e git://github.com/jeschkies/spotify-connect-scrobbler.git#egg=spotify-connect-scrobbler
+gunicorn==19.7.1
+flask==0.12.2
