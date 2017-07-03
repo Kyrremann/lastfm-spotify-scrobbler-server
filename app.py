@@ -10,6 +10,7 @@ def hello():
 @app.route("/scrobble")
 def manual_scrobbling():
     task.start_scrobbling()
+    return redirect("/")
 
 if __name__ == "__main__":
     app.run()
