@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, session
+from flask import Flask, redirect, render_template, request, session
 import os
 from spotify_connect_scrobbler.lastfm import LastfmClient
 from spotify_connect_scrobbler.spotify import SpotifyClient
@@ -18,14 +18,14 @@ import task
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return render_template("index.html")
 
 @app.route("/steps/1")
 def enter_email():
     # Direct user to authentication Spotify URL.
     # TODO: Set different redirect url.
     auth_url = spotify_client.request_authorization()
-    return "<a href='{}'>Authenticate Spotify</a>".format(auth_url)
+    return render_template("step.html", auth_url=auth_url)
 
 @app.route("/steps/2")
 def capture_spotify_token():
