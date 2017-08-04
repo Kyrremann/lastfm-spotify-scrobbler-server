@@ -1,7 +1,11 @@
-from flask import Flask, redirect, render_template, request, session
 import os
+import task
+import database
+
+from flask import Flask, redirect, render_template, request, session
 from spotify_connect_scrobbler.lastfm import LastfmClient
 from spotify_connect_scrobbler.spotify import SpotifyClient
+from spotify_connect_scrobbler import Credentials
 
 app = Flask(__name__)
 app.secret_key = 'no so secret' # TODO: Pass key with env variable.
@@ -13,8 +17,6 @@ spotify_client = SpotifyClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
 LASTFM_API_KEY = os.environ['LASTFM_API_KEY']
 LASTFM_API_SECRET = os.environ['LASTFM_API_SECRET']
 lastfm_client = LastfmClient(LASTFM_API_KEY, LASTFM_API_SECRET)
-
-import task
 
 @app.route("/")
 def hello():
@@ -56,6 +58,19 @@ def capture_lastfm_token():
 @app.route("/scrobble")
 def manual_scrobbling():
     task.start_scrobbling()
+    return redirect("/")
+
+@app.route("/test")
+def test_scrobble():
+    db = Database(os.environ['MONGODB_URI'], os.environ['MONGODB_DATABASE'], os.environ['MONGODB_COLLECTION'])
+    # Use a user document, that links to each users documents that stores the credentials that we need
+    document = db.find_credentials('595a182d734d1d5fb29fd140')
+    print(data)
+    credentials = Credentials.load_from_document(document)
+    credentials = scrobbler.main(credentials)
+    print(credentials.document_id)
+    print(credentials.get_as_data())
+    db.update_credentials(credentials.document_id, credentials.get_as_data())
     return redirect("/")
 
 if __name__ == "__main__":
