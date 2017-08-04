@@ -1,0 +1,12 @@
+body {
+    padding: 0.8em;
+}
+
+.l-box {
+    padding: 1em;
+}
+
+.step > h1 {
+    text-align: center;
+    color: #4484CE;
+}
