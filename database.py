@@ -1,4 +1,5 @@
 import pymongo
+from bson import ObjectId
 
 class Database:
     """A simple MongoDB class for working with the
@@ -10,13 +11,13 @@ class Database:
         collection (str):
     """
 
-    def __init__(self, uri, database, collection):
+    def __init__(self, uri, database_name, collection):
         self.client = pymongo.MongoClient(uri)
-        self.database = client[database]
-        self.collection = db[collection]
+        self.database = self.client[database_name]
+        self.collection = self.database[collection]
 
     def update_credentials(self, user_id, data):
-        self.collection.update_one({'_id': ObjectId(self.document_id)}, {'$set': data})
+        self.collection.update_one({'_id': ObjectId(user_id)}, {'$set': data})
 
     def find_credentials(self, document_id):
-        return self.collection.find_one(document_id)
+        return self.collection.find_one({'_id': ObjectId(document_id)})
