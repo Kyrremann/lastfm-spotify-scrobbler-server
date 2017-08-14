@@ -58,18 +58,5 @@ def manual_scrobbling():
     task.start_scrobbling()
     return redirect("/")
 
-@app.route("/test")
-def test_scrobble():
-    db = Database(os.environ['MONGODB_URI'], os.environ['MONGODB_DATABASE'], os.environ['MONGODB_COLLECTION'])
-    # Use a user document, that links to each users documents that stores the credentials that we need
-    document = db.find_credentials('595a182d734d1d5fb29fd140')
-    print(document)
-    credentials = scrobbler.scrobbler.main(document)
-    print(credentials.document_id)
-    print(credentials.todict())
-    db.update_credentials(credentials.document_id, credentials.todict())
-    return redirect("/")
-
 if __name__ == "__main__":
-    #app.run()
-    test_scrobble()
+    app.run()
