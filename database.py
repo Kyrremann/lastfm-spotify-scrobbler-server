@@ -16,8 +16,8 @@ class Database:
         self.database = self.client[database_name]
         self.collection = self.database[collection]
 
-    def update_credentials(self, user_id, data):
-        self.collection.update_one({'_id': ObjectId(user_id)}, {'$set': data})
+    def update_credentials(self, document_id, data):
+        self.collection.update_one({'_id': ObjectId(document_id)}, {'$set': data})
 
     def find_credentials(self, document_id):
         return self.collection.find_one({'_id': ObjectId(document_id)})
