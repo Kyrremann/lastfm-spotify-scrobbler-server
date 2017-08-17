@@ -1,5 +1,4 @@
 import os
-import task
 
 from flask import Flask, redirect, render_template, request, session
 import spotify_connect_scrobbler as scrobbler
@@ -53,10 +52,6 @@ def capture_lastfm_token():
     # TODO: Save credentials to MongoDB
     return "Last.fm credentials: {}\nSpotify credentials: {}".format(lastfm_credentials.todict(), spotify_credentials)
 
-@app.route("/scrobble")
-def manual_scrobbling():
-    task.start_scrobbling()
-    return redirect("/")
 
 if __name__ == "__main__":
     app.run()
