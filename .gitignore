@@ -3,6 +3,9 @@
 
 # Python
 __pycache__/
+*.pyc
+src/
 
 # Project config
 scrobbler.config
+.env
