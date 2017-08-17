@@ -4,21 +4,21 @@
     <div class="pure-u-1-3">
         <div class="l-box step">
             <h1>First</h1>
-            <a class="button-xlarge pure-button" href='{{ auth_url }}'>Authenticate with Spotify</a>
-            <p>You will redirected back to us.</p>
+            <a class="button-xlarge pure-button{{ ' pure-button-disabled' if step != 1 }}" href='{{ auth_url }}'>Authenticate with Spotify</a>
+            <p>Will send you to Spotify to verify who you are, and then you will redirected back to us.</p>
         </div>
     </div>
     <div class="pure-u-1-3">
         <div class="l-box step">
             <h1>Then</h1>
-            <a class="button-xlarge pure-button pure-button-disabled" href='{{ auth_url }}'>Authenticate with Last.fm</a>
-            <p>The next step will redirect you to Last.fm for authentication.</p>
+            <a class="button-xlarge pure-button{{ ' pure-button-disabled' if step != 2 }}" href='{{ auth_url }}'>Authenticate with Last.fm</a>
+            <p>Here you will be redirected Last.fm for authentication and approval of our service. Afterward you will be redirected back here.</p>
         </div>
     </div>
     <div class="pure-u-1-3">
         <div class="l-box step">
             <h1>Done</h1>
-            <p<>Thanks. You are all set.</p>
+            <p<>Thanks. You are all set. Enjoy your hassle free scrobbling.</p>
         </div>
     </div>
 </div>

@@ -10,10 +10,11 @@ app.secret_key = 'no so secret' # TODO: Pass key with env variable.
 
 SPOTIFY_CLIENT_ID = os.environ['SPOTIFY_CLIENT_ID']
 SPOTIFY_CLIENT_SECRET = os.environ['SPOTIFY_CLIENT_SECRET']
-spotify_client = scrobbler.spotify.SpotifyClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
 
 LASTFM_API_KEY = os.environ['LASTFM_API_KEY']
 LASTFM_API_SECRET = os.environ['LASTFM_API_SECRET']
+
+spotify_client = scrobbler.spotify.SpotifyClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
 lastfm_client = scrobbler.lastfm.LastfmClient(LASTFM_API_KEY, LASTFM_API_SECRET)
 
 @app.route("/")
@@ -26,7 +27,7 @@ def enter_email():
     redirect_uri = "{}steps/2".format(request.url_root)
     print(redirect_uri)
     auth_url = spotify_client.request_authorization(redirect_uri)
-    return render_template("step.html", auth_url=auth_url)
+    return render_template("step.html", auth_url=auth_url, step=1)
 
 @app.route("/steps/2")
 def capture_spotify_token():
@@ -40,7 +41,8 @@ def capture_spotify_token():
     # Direct user to authentication Last.fm URL.
     redirect_uri = "{}steps/3".format(request.url_root)
     auth_url = lastfm_client.request_authorization(redirect_uri)
-    return "<a href='{}'>Authenticate Last.fm</a>".format(auth_url)
+    # return "<a href='{}'>Authenticate Last.fm</a>".format(auth_url)
+    return render_template("step.html", auth_url=auth_url, step=2)
 
 @app.route("/steps/3")
 def capture_lastfm_token():
@@ -50,9 +52,11 @@ def capture_lastfm_token():
 
     # TODO: Deserialize Spotify credentials
     spotify_credentials = session['spotify_credentials']
-    # TODO: Save credentials to MongoDB
-    return "Last.fm credentials: {}\nSpotify credentials: {}".format(lastfm_credentials.todict(), spotify_credentials)
 
+    # TODO: Save credentials to MongoDB
+    # lastfm_credentials.todict()
+    # spotify_credentials
+    return render_template("step.html", auth_url='', step=3)
 
 if __name__ == "__main__":
     app.run()
