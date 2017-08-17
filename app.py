@@ -18,7 +18,7 @@ spotify_client = scrobbler.spotify.SpotifyClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIE
 lastfm_client = scrobbler.lastfm.LastfmClient(LASTFM_API_KEY, LASTFM_API_SECRET)
 
 @app.route("/")
-def hello():
+def front_page():
     return render_template("index.html")
 
 @app.route("/steps/1")
