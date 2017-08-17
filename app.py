@@ -5,6 +5,7 @@ import spotify_connect_scrobbler as scrobbler
 from database import Database
 
 app = Flask(__name__)
+app.config['DEBUG'] = True
 app.secret_key = 'no so secret' # TODO: Pass key with env variable.
 
 SPOTIFY_CLIENT_ID = os.environ['SPOTIFY_CLIENT_ID']
