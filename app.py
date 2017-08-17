@@ -25,7 +25,7 @@ def front_page():
 def enter_email():
     # Direct user to authentication Spotify URL.
     redirect_uri = "{}steps/2".format(request.url_root)
-    print(redirect_uri)
+    app.logger.debug(redirect_uri)
     auth_url = spotify_client.request_authorization(redirect_uri)
     return render_template("step.html", auth_url=auth_url, step=1)
 
