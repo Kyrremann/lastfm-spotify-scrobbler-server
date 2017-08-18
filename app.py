@@ -41,7 +41,6 @@ def capture_spotify_token():
     # Direct user to authentication Last.fm URL.
     redirect_uri = "{}steps/3".format(request.url_root)
     auth_url = lastfm_client.request_authorization(redirect_uri)
-    # return "<a href='{}'>Authenticate Last.fm</a>".format(auth_url)
     return render_template("step.html", auth_url=auth_url, step=2)
 
 @app.route("/steps/3")
