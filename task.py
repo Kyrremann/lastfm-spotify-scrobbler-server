@@ -1,13 +1,15 @@
-from spotify_connect_scrobbler import scrobbler
+from spotify_connect_scrobbler import scrobbler, spotify, lastfm
 from database import Database
+
+from spotify_connect_scrobbler.credentials import Credentials
 
 import sys, os, json
 
 def start_scrobbling():
-    spotify_client = scrobbler.SpotifyClient(
+    spotify_client = spotify.SpotifyClient(
         os.environ['SPOTIFY_CLIENT_ID'],
         os.environ['SPOTIFY_CLIENT_SECRET'])
-    lastfm_client = scrobbler.LastfmClient(
+    lastfm_client = lastfm.LastfmClient(
         os.environ['LASTFM_API_KEY'],
         os.environ['LASTFM_API_SECRET'])
 
