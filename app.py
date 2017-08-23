@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask, redirect, render_template, request, session
-import spotify_connect_scrobbler as scrobbler
+from spotify_connect_scrobbler import scrobbler, spotify, lastfm, credentials
 from database import Database
 
 app = Flask(__name__)
@@ -14,8 +14,8 @@ SPOTIFY_CLIENT_SECRET = os.environ['SPOTIFY_CLIENT_SECRET']
 LASTFM_API_KEY = os.environ['LASTFM_API_KEY']
 LASTFM_API_SECRET = os.environ['LASTFM_API_SECRET']
 
-spotify_client = scrobbler.spotify.SpotifyClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
-lastfm_client = scrobbler.lastfm.LastfmClient(LASTFM_API_KEY, LASTFM_API_SECRET)
+spotify_client = spotify.SpotifyClient(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
+lastfm_client = lastfm.LastfmClient(LASTFM_API_KEY, LASTFM_API_SECRET)
 
 @app.route("/")
 def front_page():
@@ -52,9 +52,18 @@ def capture_lastfm_token():
     # TODO: Deserialize Spotify credentials
     spotify_credentials = session['spotify_credentials']
 
-    # TODO: Save credentials to MongoDB
-    # lastfm_credentials.todict()
-    # spotify_credentials
+    user_credentials = credentials.Credentials.load_from_dict({'lastfm': lastfm_credentials.todict(), 'spotify': spotify_credentials})
+    user_id = spotify_client.get_user_id(user_credentials.spotify)
+
+    db = Database(os.environ['MONGODB_URI'],
+                  os.environ['MONGODB_DATABASE'],
+                  os.environ['MONGODB_COLLECTION'])
+
+    document_id = os.environ['MONGODB_DOCUMENT']
+    users = db.find_credentials(document_id)['users']
+    users[user_id] = user_credentials.todict()
+    db.update_credentials(document_id, {'users': users})
+
     return render_template("step.html", auth_url='', step=3)
 
 if __name__ == "__main__":
