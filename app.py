@@ -5,8 +5,8 @@ from spotify_connect_scrobbler import scrobbler, spotify, lastfm, credentials
 from database import Database
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
-app.secret_key = 'no so secret' # TODO: Pass key with env variable.
+app.config['DEBUG'] = os.environ['DEBUG_MODE'] if 'DEBUG_MODE' in os.environ else False
+app.secret_key = os.environ['APP_SECRET_KEY'] if 'APP_SECRET_KEY' in os.environ else 'no so secret'
 
 SPOTIFY_CLIENT_ID = os.environ['SPOTIFY_CLIENT_ID']
 SPOTIFY_CLIENT_SECRET = os.environ['SPOTIFY_CLIENT_SECRET']
@@ -63,6 +63,7 @@ def capture_lastfm_token():
     users = db.find_credentials(document_id)['users']
     users[user_id] = user_credentials.todict()
     db.update_credentials(document_id, {'users': users})
+    app.logger.info('Added user {} to our scrobble list'.format(user_id))
 
     return render_template("step.html", auth_url='', step=3)
 

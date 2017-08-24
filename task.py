@@ -20,7 +20,7 @@ def start_scrobbling():
     document_id = os.environ['MONGODB_DOCUMENT']
     users = db.find_credentials(document_id)['users']
     for user_id in users:
-        print('Scrobble music for {}'.format(user_id))
+        print('Scrobbling music for {}'.format(user_id))
         credentials = scrobbler.scrobble(users[user_id], spotify_client, lastfm_client)
         users[user_id] = credentials.todict()
 
