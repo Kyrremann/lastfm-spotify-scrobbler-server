@@ -9,3 +9,4 @@ src/
 # Project config
 scrobbler.config
 .env
+.python-version
